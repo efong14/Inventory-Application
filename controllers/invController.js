@@ -14,13 +14,13 @@ async function allGamesGet(req, res) {
   const genreList = await db.SOMETHING();
 
   if (!req.query) {
-    const gamesInfo = await db.SOMETHING('ASC');
+    const gamesInfo = await db.getAllGames('ASC');
   } else if (req.query.sort && req.query.genre) {
     const gamesInfo = await db.SOMETHING(req.query.sort, req.query.genre);
   } else if (req.query.genre) {
     const gamesInfo = await db.SOMETHING('ASC', req.query.genre);
   } else if (req.query.sort) {
-    const gamesInfo = await db.SOMETHING(req.query.sort);
+    const gamesInfo = await db.getAllGames(req.query.sort);
   }
 
   res.render('displayAllGames', {

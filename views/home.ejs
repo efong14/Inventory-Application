@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+  </head>
+  <body>
+    <header><%= title %></header>
+    <section class="displayBox">
+      <div class="sortSidebar">
+        <form method="GET" action="/">
+          <div class="sortDate">
+            <h1 class="sortHeader">Sort by Date</h1>
+            <input type="checkbox" id="Ascending" name="Ascending" value="Ascending" />
+            <label for="Ascending">Ascending</label>
+            <input type="checkbox" id="Descending" name="Descending" value="Descending" />
+            <label for="Descending">Descending</label>
+          </div>
+          <div class="sortGenre">
+            <h1 class="sortHeader">Sort by Genre</h1>
+            <ul class="genreList">
+            <% genreList.forEach((genre)=>{ %>
+                <li class="genreListItem">
+                    <input type="checkbox" id="<%= genre.name %>" name="<%= genre.name %>" value="<%= genre.name %>" />
+                    <label for="<%= genre.name %>"><%= genre.name %></label>
+                </li>
+            <% }) %>
+            </ul>
+            <input type="submit" class="submitButton" value="Apply Filters">
+          </div>
+        </form>
+      </div>
+      <div class="itemBox">
+        <% gamesInfo.forEach((game)=>{ %>
+          <div class="gameBox">
+            <div class="imageBox"><img src="" alt="" class="gameImg"></div>
+            <div class="textBox">
+              <div class="gameTitle"></div>
+              <div class="developer"></div>
+              <div class="publisher"></div>
+            </div>
+            <div class="genre"></div>  
+          </div>
+        <% }) %>
+      </div>
+    </section>
+
+  </body>
+</html>

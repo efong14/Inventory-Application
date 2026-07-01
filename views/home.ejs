@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home</title>
+    <title><%= title %></title>
   </head>
   <body>
     <header><%= title %></header>
+    <nav>
+      <% - include('nav') %>
+    </nav>
     <section class="displayBox">
       <div class="sortSidebar">
         <form method="GET" action="/">
           <div class="sortDate">
             <h1 class="sortHeader">Sort by Date</h1>
-            <input type="checkbox" id="Ascending" name="Ascending" value="Ascending" />
+            <input type="radio" id="Ascending" name="sort" value="Ascending" />
             <label for="Ascending">Ascending</label>
-            <input type="checkbox" id="Descending" name="Descending" value="Descending" />
+            <input type="radio" id="Descending" name="sort" value="Descending" />
             <label for="Descending">Descending</label>
           </div>
           <div class="sortGenre">
@@ -20,7 +23,7 @@
             <ul class="genreList">
             <% genreList.forEach((genre)=>{ %>
                 <li class="genreListItem">
-                    <input type="checkbox" id="<%= genre.name %>" name="<%= genre.name %>" value="<%= genre.name %>" />
+                    <input type="checkbox" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
                     <label for="<%= genre.name %>"><%= genre.name %></label>
                 </li>
             <% }) %>
@@ -32,17 +35,19 @@
       <div class="itemBox">
         <% gamesInfo.forEach((game)=>{ %>
           <div class="gameBox">
-            <div class="imageBox"><img src="" alt="" class="gameImg"></div>
+            <a href="/<%= game.id%>/details" class="gameLink"></a>
+            <div class="imageBox"><img src="../public//img/game-cartridge.png" alt="Image of a game cartridge" class="gameImg"></div>
             <div class="textBox">
-              <div class="gameTitle"></div>
-              <div class="developer"></div>
-              <div class="publisher"></div>
+              <div class="gameTitle"><%= game.name %></div>
+              <div class="gameDate"><%= game.date %></div>
+              <div class="developer"><%= game.developer %></div>
+              <div class="publisher"><%= game.publisher %></div>
             </div>
-            <div class="genre"></div>  
+            <div class="genre"><%= game.genre %></div>  
           </div>
         <% }) %>
       </div>
     </section>
-
+    <footer><a href="https://www.flaticon.com/free-icons/game-cartridge" title="game cartridge icons">Game cartridge icons created by Freepik - Flaticon</a></footer>
   </body>
 </html>

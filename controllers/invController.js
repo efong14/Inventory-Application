@@ -38,8 +38,8 @@ async function allGamesGet(req, res) {
 
   const sort = req.query.sort;
   const genre = req.query.genre;
-  const genreList = await db.getAllGenres();
-  const gamesInfo = await db.getAllGamesByGenre(sort, genre);
+  const genreList = await db.getAllLists(genre);
+  const gamesInfo = await db.getAllGames(sort, genre);
 
   res.render('displayAllGames', {
     title: 'All Games',
@@ -58,25 +58,44 @@ async function studiosListGet(req, res) {
 
   res.render('displayCategory', {
     title: `All ${type}`,
+    type: type,
     studiosList: studiosList,
   });
 }
 
 async function allGamesByStudioGet(req, res) {
-  // route =  '/:studio/games'
-  // sample route: '/Sega/games?type=developers&sort=DESC&genre=FPS'
+  // route =  '/:studio/:type/games'
+  // sample route: '/Sega/developers/games?&sort=DESC&genre=FPS'
 
   const studio = req.params.studio;
-  const type = req.query.type;
+  const type = req.params.type;
   const sort = req.query.sort;
   const genre = req.query.genre;
-  const genreList = await db.getAllGenres();
+  const genreList = await db.getAllGenres(genre);
 
   const gamesInfo = await db.getAllGamesByGenre(type, studio, sort, genre);
 
   res.render('displayAllGames', {
-    title: 'All Games',
+    title: `All Games from ${studio}`,
     gamesInfo: gamesInfo,
     genreList: genreList,
   });
 }
+
+async function gameDetailsGet(req, res) {
+  // route = '/:gameId/details'
+
+  const gameId = req.params.gameId;
+  const game = await db.getGameById(gameId);
+
+  res.render('gameDetails', {
+    game: game,
+  });
+}
+
+module.exports = {
+  allGamesGet,
+  studiosListGet,
+  allGamesByStudioGet,
+  gameDetailsGet,
+};

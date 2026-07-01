@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><%= title %></title>
+</head>
+<body>
+    <nav>
+      <% - include('nav') %>
+    </nav>
+    <header><%= title %></header>
+    <section class="displaybox">
+        <div class="itemBox">
+        <% studioList.forEach((studio)=>{ %>
+          <div class="studioBox">
+            <div class="textBox">
+              <a href="/<%= studio.name %>/<%= type %>/games"><%= studio.name %></a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+</body>
+</html>

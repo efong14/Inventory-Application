@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <nav><%- include('nav') %></nav>
+    <a href="/">Return to All games</a>
+    <div class="gameBox">
+      <div class="imageBox">
+        <img
+          src="../public//img/game-cartridge.png"
+          alt="Image of a game cartridge"
+          class="gameImg"
+        />
+      </div>
+      <div class="textBox">
+        <div class="gameTitle"><%= game.name %></div>
+        <div class="gameDate"><%= game.date %></div>
+        <div class="developer"><%= game.developer %></div>
+        <div class="publisher"><%= game.publisher %></div>
+      </div>
+      <div class="genre"><%= game.genre %></div>
+    </div>
+  </body>
+</html>

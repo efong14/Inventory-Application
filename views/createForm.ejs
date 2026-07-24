@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <nav><% - include('partials/nav.ejs') %></nav>
+    <div class="titleBox">
+      <header class="title"><%= title %></header>
+      <a class="returnButton" href="/">Return to All Games</a>
+    <section class="formContainer">
+    <%- include('partials/errors.ejs') %>
+      <form action="/new" method="POST">
+        <label for="gameName">Game Title</label>
+        <input type="text" name="gameName" id="gameName" />
+        <label for="gameDate">Release Date</label>
+        <input type="date" name="gameDate" id="gameDate" />
+        <label for="gameDeveloper">Developer</label>
+        <input type="text" name="gameDeveloper" id="gameDeveloper" />
+        <label for="gamePublisher">Publisher</label>
+        <input type="text" name="gamePublisher" id="gamePublisher" />
+        <% genreList.forEach((genre)=>{ %>
+            <li class="genreListItem">
+                <input type="hidden" id="genreId" name="genreId" value="<%= genre.id %>" >
+                <input type="radio" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
+                <label for="<%= genre.name %>"><%= genre.name %></label>
+            </li>
+        <% }) %>
+        <input type="submit" class="submitButton" value="Submit Game">
+      </form>
+    </section>
+  </body>
+</html>

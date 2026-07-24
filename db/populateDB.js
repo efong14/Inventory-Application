@@ -6,7 +6,7 @@ id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 ??? VARCHAR (255)
 );
 
-INSERT INTO inventory (???) VALUES ('???')`;
+INSERT INTO inventory (???) VALUES ('???');`;
 
 async function main() {
   console.log('seeding...');

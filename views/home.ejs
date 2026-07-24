@@ -4,10 +4,13 @@
     <title><%= title %></title>
   </head>
   <body>
-    <header><%= title %></header>
     <nav>
-      <% - include('nav') %>
+    <nav><% - include('partials/nav.ejs') %></nav>
     </nav>
+    <div class="titleBox">
+      <header class="title"><%= title %></header>
+      <a class="newButton" href="/new">Create New Game Entry</a>
+    <sectio class="formContainer">
     <section class="displayBox">
       <div class="sortSidebar">
         <form method="GET" action="/">
@@ -23,13 +26,14 @@
             <ul class="genreList">
             <% genreList.forEach((genre)=>{ %>
                 <li class="genreListItem">
+                     <input type="hidden" id="genreId" name="genreId" value="<%= genre.id %>" >
                     <input type="checkbox" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
                     <label for="<%= genre.name %>"><%= genre.name %></label>
                 </li>
             <% }) %>
             </ul>
-            <input type="submit" class="submitButton" value="Apply Filters">
           </div>
+          <input type="submit" class="submitButton" value="Apply Filters">
         </form>
       </div>
       <div class="itemBox">

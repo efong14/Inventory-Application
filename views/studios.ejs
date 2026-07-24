@@ -5,9 +5,9 @@
 </head>
 <body>
     <nav>
-      <% - include('nav') %>
+    <nav><% - include('partials/nav.ejs') %></nav>
     </nav>
-    <header><%= title %></header>
+    <header class="title"><%= title %></header>
     <section class="displaybox">
         <div class="itemBox">
         <% studioList.forEach((studio)=>{ %>

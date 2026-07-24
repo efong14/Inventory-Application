@@ -4,8 +4,8 @@
     <title><%= title %></title>
   </head>
   <body>
-    <nav><%- include('nav') %></nav>
-    <a href="/">Return to All games</a>
+    <nav><% - include('partials/nav.ejs') %></nav>
+    <a class="returnButton" href="/">Return to All games</a>
     <div class="gameBox">
       <div class="imageBox">
         <img
@@ -21,6 +21,10 @@
         <div class="publisher"><%= game.publisher %></div>
       </div>
       <div class="genre"><%= game.genre %></div>
+      <div class="buttonContainer">
+        <a href="/<%= game.id %>/update" class="updateButton">Update Entry</a>
+        <a href="/<%= game.id %>/delete" class="deleteButton">Delete Entry</a>
+      </div>
     </div>
   </body>
 </html>

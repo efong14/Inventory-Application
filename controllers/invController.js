@@ -177,8 +177,6 @@ const updateGamePost = [
   async (req, res) => {
     const errors = validationResult(req);
     const gameId = req.body.gameId;
-    const devId = req.body.developerId;
-    const pubId = req.body.publisherId;
     const genreId = req.body.genreId;
 
     if (!errors.isEmpty()) {
@@ -211,14 +209,18 @@ const updateGamePost = [
       genreId,
       gameDeveloper,
       gamePublisher,
-      devId,
-      pubId,
       devDuplicate,
       pubDuplicate,
     );
     res.redirect('/');
   },
 ];
+
+async function deleteGameGet(req, res) {
+  const gameId = req.params.gameId;
+  await db.deleteGame(gameId);
+  res.redirect('/');
+}
 
 module.exports = {
   allGamesGet,
@@ -229,4 +231,5 @@ module.exports = {
   newGamePost,
   gameUpdateGet,
   updateGamePost,
+  deleteGameGet,
 };

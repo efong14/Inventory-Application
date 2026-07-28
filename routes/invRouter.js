@@ -10,6 +10,6 @@ invRouter.get('/new', invController.newGameGet);
 invRouter.post('/new', invController.newGamePost);
 invRouter.get('/:gameId/update', invController.gameUpdateGet);
 invRouter.post('/:gameId/update', invController.updateGamePost);
-invRouter.get('/delete');
+invRouter.get('/:gameId/delete', invController.deleteGameGet);
 
 module.exports = invRouter;

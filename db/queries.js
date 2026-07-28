@@ -85,16 +85,20 @@ exports.postNewGame = async (
     INSERT INTO game_genre (gameId, genreId) SELECT id, $3 AS genreId FROM games WHERE name = $1;`,
     [gameName, gameDate, genreId],
   );
+
   if (!devDuplicate) {
     await pool.query(`INSERT INTO developers (name) VALUES ($1);`, [gameDeveloper]);
   }
+
   await pool.query(
     `INSERT INTO game_developer (gameId, developerId) SELECT games.id, developers.id FROM games, developers WHERE games.name = $1 AND developers.name = $2;`,
     [gameName, gameDeveloper],
   );
+
   if (!pubDuplicate) {
     await pool.query(`INSERT INTO publishers (name) VALUES ($1);`, [gamePublisher]);
   }
+
   await pool.query(
     `INSERT INTO game_developer (gameId, publisherId) SELECT games.id, publishers.id FROM games, publishers WHERE games.name = $1 AND publishers.name = $2;`,
     [gameName, gamePublisher],
@@ -113,8 +117,6 @@ exports.updateGamePost = async (
   genreId,
   gameDeveloper,
   gamePublisher,
-  devId,
-  pubId,
   devDuplicate,
   pubDuplicate,
 ) => {
@@ -124,18 +126,34 @@ exports.updateGamePost = async (
     UPDATE game_genre SET genreId = $3 WHERE gameId = ${gameId} AND genreId != $3;`,
     [gameName, gameDate, genreId],
   );
+
   if (!devDuplicate) {
     await pool.query(`INSERT INTO developers (name) VALUES ($1);`, [gameDeveloper]);
   }
+
+  const newDevId = await pool.query(`SELECT id FROM developers WHERE name = $1`, [gameDeveloper]);
+
   await pool.query(
-    `UPDATE game_developers SET developerId = $1 WHERE gameId = ${gameId} AND developerId != $1`,
-    [devId],
+    `UPDATE game_developer SET developerId = ${newDevId.rows[0].id} WHERE gameId = ${gameId} AND developerId != ${newDevId.rows[0].id}`,
   );
+
   if (!pubDuplicate) {
     await pool.query(`INSERT INTO publishers (name) VALUES ($1);`, [gamePublisher]);
   }
+
+  const newPubId = await pool.query(`SELECT id FROM publishers WHERE name  = $1`, [gamePublisher]);
+
   await pool.query(
-    `UPDATE game_publishers SET publisherId = $1 WHERE gameId = ${gameId} AND developerId != $1`,
-    [pubId],
+    `UPDATE game_publisher SET publisherId = ${newPubId.rows[0].id} WHERE gameId = ${gameId} AND publisherId != ${newPubId.rows[0].id}`,
+  );
+};
+
+exports.deleteGame = async (gameId) => {
+  await pool.query(
+    `DELETE FROM games WHERE id = ${gameId};
+    DELETE FROM game_genre WHERE gameId = ${gameId};
+    DELETE FROM game_developer WHERE gameId = ${gameId};
+    DELETE FROM game_publisher WHERE gameId = ${gameId};
+    `,
   );
 };

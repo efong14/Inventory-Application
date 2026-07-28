@@ -13,8 +13,6 @@
       <form action="/:gameId/update" method="POST">
         <input type="hidden" name="gameId" id="gameId" value="game.id">
         <input type="hidden" name="genreId" id="genreId" value="game.genreId">
-        <input type="hidden" name="developerId" id="developerId" value="game.developerId">
-        <input type="hidden" name="publisherId" id="publisherId" value="game.publisherId">
         <label for="gameName">Game Title</label>
         <input type="text" name="gameName" id="gameName" value="<%= game.name% >" />
         <label for="gameDate">Release Date</label>

@@ -1,5 +1,5 @@
 const pool = require('./pool');
-const fullGameInfo = `SELECT games.id AS id, games.name AS name, games.date AS date, genres.name AS genre, developers.name AS developer, publishers.name AS publisher, developers.id AS developerId, publishers.id AS publisherId, genres.id AS genreId FROM games JOIN game_genre ON games.id = game_genre.gameId JOIN genres ON game_genre.gameId = genres.id JOIN game_developer ON games.id = game_developer.gameId JOIN developers ON game_developers.developerId = developers.id JOIN game_publisher ON games.id = game_publisher.gameId JOIN publishers ON game_publisher.publisherId = publishers.id`;
+const fullGameInfo = `SELECT games.id AS id, games.name AS name, games.date AS date, genres.name AS genre, developers.name AS developer, publishers.name AS publisher, developers.id AS developerId, publishers.id AS publisherId, genres.id AS genreId FROM games JOIN game_genre ON games.id = game_genre.gameId JOIN genres ON game_genre.genreId = genres.id JOIN game_developer ON games.id = game_developer.gameId JOIN developers ON game_developer.developerId = developers.id JOIN game_publisher ON games.id = game_publisher.gameId  JOIN publishers ON game_publisher.publisherId = publishers.id`;
 
 exports.getAllLists = async (type) => {
   const { rows } = await pool.query(`SELECT id, name FROM ${type}`);
@@ -7,47 +7,33 @@ exports.getAllLists = async (type) => {
 };
 
 exports.getAllGames = async (sort, genre) => {
-  if (!sort) {
-    const { rows } = await pool.query(fullGameInfo + ` ORDER BY games.date ASC;`);
-    return rows;
-  } else if (!genre) {
-    const { rows } = await pool.query(fullGameInfo + ` ORDER BY games.date ${sort};`);
+  if (!genre) {
+    const sorted = sort ? sort : 'ASC';
+    const { rows } = await pool.query(fullGameInfo + ` ORDER BY games.date ${sorted};`);
     return rows;
   } else {
-    const genres = Array.isArray(genre) ? "'" + genre.join("','") + "'" : genre;
+    const sorted = sort ? sort : 'ASC';
+    const genres = Array.isArray(genre) ? "'" + genre.join("','") + "'" : `'${genre}'`;
     const { rows } = await pool.query(
-      fullGameInfo + ` WHERE genre IN (${genres}) ORDER BY games.date ${sort};`,
+      fullGameInfo + ` WHERE genres.name IN (${genres}) ORDER BY games.date ${sorted};`,
     );
-    // possible error here due to genres (if array) having an extra "" wrapping the joined string? Also with single genre, check that too
     return rows;
   }
 };
 
-// IN CASE THE ABOVE DOES NOT WORK:
-// exports.getAllGamesByGenre = async (sort, genre) => {
-//   const { rows } = await pool.query(
-//     `SELECT games.name, games.date, genres.name, developers.name, publishes.name FROM games JOIN game_genre ON games.id = game_genre.gameId JOIN genres ON game_genre.gameId = genres.id JOIN game_developer ON games.id = game_developer.gameId JOIN developers ON game_developers.developerId = developers.id JOIN game_publisher ON games.id = game_publisher.gameId JOIN publishers ON game_publisher.publisherId = publishers.id WHERE genre.name = ${genre} ORDER BY games.date ${sort}`,
-//   );
-//   return rows;
-// };
-
-// Possible error below from not wrapping ${studio} in ''
 exports.getAllGamesByStudio = async (type, studio, sort, genre) => {
-  if (!sort) {
+  if (!genre) {
+    const sorted = sort ? sort : 'ASC';
     const { rows } = await pool.query(
-      fullGameInfo + ` WHERE ${type} = ${studio} ORDER BY games.date ASC;`,
-    );
-    return rows;
-  } else if (!genre) {
-    const { rows } = await pool.query(
-      fullGameInfo + ` WHERE ${type} = ${studio} ORDER BY games.date ${sort};`,
+      fullGameInfo + ` WHERE ${type} = '${studio}' ORDER BY games.date ${sorted};`,
     );
     return rows;
   } else {
-    const genres = Array.isArray(genre) ? "'" + genre.join("','") + "'" : genre;
+    const sorted = sort ? sort : 'ASC';
+    const genres = Array.isArray(genre) ? "'" + genre.join("','") + "'" : `'${genre}'`;
     const { rows } = await pool.query(
       fullGameInfo +
-        ` WHERE ${type}.name = '${search}' AND genre IN (${genres}) ORDER BY games.date ${sort};`,
+        ` WHERE ${type} = '${studio}' AND genres.name IN (${genres}) ORDER BY games.date ${sorted};`,
     );
     return rows;
   }
@@ -59,7 +45,7 @@ exports.getGameById = async (gameId) => {
 };
 
 exports.searchItemByName = async (column, table, name) => {
-  const { rows } = await pool.query(`SELECT ${column} FROM $1 WHERE name = $2;`, [table, name]);
+  const { rows } = await pool.query(`SELECT ${column} FROM ${table} WHERE name = $1;`, [name]);
   return rows[0];
 };
 

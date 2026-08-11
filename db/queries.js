@@ -66,12 +66,13 @@ exports.postNewGame = async (
   devDuplicate,
   pubDuplicate,
 ) => {
-  await pool.query(
-    `INSERT INTO games (name, date) VALUES ($1, $2);
-    INSERT INTO game_genre (gameId, genreId) SELECT id, $3 AS genreId FROM games WHERE name = $1;`,
-    [gameName, gameDate, genreId],
-  );
+  console.log(genreId);
 
+  await pool.query(`INSERT INTO games (name, date) VALUES ($1, $2);`, [gameName, gameDate]);
+  await pool.query(
+    `INSERT INTO game_genre (gameId, genreId) SELECT id, $1 AS genreId FROM games WHERE name = $2;`,
+    [genreId, gameName],
+  );
   if (!devDuplicate) {
     await pool.query(`INSERT INTO developers (name) VALUES ($1);`, [gameDeveloper]);
   }
@@ -86,7 +87,7 @@ exports.postNewGame = async (
   }
 
   await pool.query(
-    `INSERT INTO game_developer (gameId, publisherId) SELECT games.id, publishers.id FROM games, publishers WHERE games.name = $1 AND publishers.name = $2;`,
+    `INSERT INTO game_publisher (gameId, publisherId) SELECT games.id, publishers.id FROM games, publishers WHERE games.name = $1 AND publishers.name = $2;`,
     [gameName, gamePublisher],
   );
 };

@@ -10,6 +10,7 @@ exports.getAllGames = async (sort, genre) => {
   if (!genre) {
     const sorted = sort ? sort : 'ASC';
     const { rows } = await pool.query(fullGameInfo + ` ORDER BY games.date ${sorted};`);
+
     return rows;
   } else {
     const sorted = sort ? sort : 'ASC';
@@ -17,6 +18,7 @@ exports.getAllGames = async (sort, genre) => {
     const { rows } = await pool.query(
       fullGameInfo + ` WHERE genres.name IN (${genres}) ORDER BY games.date ${sorted};`,
     );
+
     return rows;
   }
 };
@@ -25,16 +27,19 @@ exports.getAllGamesByStudio = async (type, studio, sort, genre) => {
   if (!genre) {
     const sorted = sort ? sort : 'ASC';
     const { rows } = await pool.query(
-      fullGameInfo + ` WHERE ${type} = '${studio}' ORDER BY games.date ${sorted};`,
+      fullGameInfo + ` WHERE ${type}.name = '${studio}' ORDER BY games.date ${sorted};`,
     );
+
     return rows;
   } else {
     const sorted = sort ? sort : 'ASC';
     const genres = Array.isArray(genre) ? "'" + genre.join("','") + "'" : `'${genre}'`;
+
     const { rows } = await pool.query(
       fullGameInfo +
-        ` WHERE ${type} = '${studio}' AND genres.name IN (${genres}) ORDER BY games.date ${sorted};`,
+        ` WHERE ${type}.name = '${studio}' AND genres.name IN (${genres}) ORDER BY games.date ${sorted};`,
     );
+
     return rows;
   }
 };
@@ -69,10 +74,12 @@ exports.postNewGame = async (
   console.log(genreId);
 
   await pool.query(`INSERT INTO games (name, date) VALUES ($1, $2);`, [gameName, gameDate]);
+
   await pool.query(
     `INSERT INTO game_genre (gameId, genreId) SELECT id, $1 AS genreId FROM games WHERE name = $2;`,
     [genreId, gameName],
   );
+
   if (!devDuplicate) {
     await pool.query(`INSERT INTO developers (name) VALUES ($1);`, [gameDeveloper]);
   }
@@ -107,11 +114,13 @@ exports.updateGamePost = async (
   devDuplicate,
   pubDuplicate,
 ) => {
+  await pool.query(`UPDATE games SET name = $1 WHERE id = ${gameId} AND name != $1;`, [gameName]);
+
+  await pool.query(`UPDATE games SET date = $1 WHERE id = ${gameId} AND date != $1;`, [gameDate]);
+
   await pool.query(
-    `UPDATE games SET name = $1 WHERE id = ${gameId} AND name != $1;
-    UPDATE games SET date = $2 WHERE id = ${gameId} AND date != $2;
-    UPDATE game_genre SET genreId = $3 WHERE gameId = ${gameId} AND genreId != $3;`,
-    [gameName, gameDate, genreId],
+    `UPDATE game_genre SET genreId = $1 WHERE gameId = ${gameId} AND genreId != $1;`,
+    [genreId],
   );
 
   if (!devDuplicate) {
@@ -136,11 +145,11 @@ exports.updateGamePost = async (
 };
 
 exports.deleteGame = async (gameId) => {
-  await pool.query(
-    `DELETE FROM games WHERE id = ${gameId};
-    DELETE FROM game_genre WHERE gameId = ${gameId};
-    DELETE FROM game_developer WHERE gameId = ${gameId};
-    DELETE FROM game_publisher WHERE gameId = ${gameId};
-    `,
-  );
+  await pool.query(`DELETE FROM games WHERE id = ${gameId};`);
+
+  await pool.query(`DELETE FROM game_genre WHERE gameId = ${gameId};`);
+
+  await pool.query(`DELETE FROM game_developer WHERE gameId = ${gameId};`);
+
+  await pool.query(`DELETE FROM game_publisher WHERE gameId = ${gameId};`);
 };

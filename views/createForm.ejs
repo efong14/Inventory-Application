@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <nav><% - include('partials/nav.ejs') %></nav>
-    <div class="titleBox">
+    <%- include('partials/nav.ejs') %>
+    <div class="titleBox form">
       <header class="title"><%= title %></header>
-      <a class="returnButton" href="/">Return to All Games</a>
-    <section class="formContainer">
-    <%- include('partials/errors.ejs') %>
-      <form action="/new" method="POST">
-        <label for="gameName">Game Title</label>
-        <input type="text" name="gameName" id="gameName" />
-        <label for="gameDate">Release Date</label>
-        <input type="date" name="gameDate" id="gameDate" />
-        <label for="gameDeveloper">Developer</label>
-        <input type="text" name="gameDeveloper" id="gameDeveloper" />
-        <label for="gamePublisher">Publisher</label>
-        <input type="text" name="gamePublisher" id="gamePublisher" />
-        <% genreList.forEach((genre)=>{ %>
-            <li class="genreListItem">
-                <input type="hidden" id="genreId" name="genreId" value="<%= genre.id %>" >
-                <input type="radio" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
-                <label for="<%= genre.name %>"><%= genre.name %></label>
-            </li>
-        <% }) %>
-        <input type="submit" class="submitButton" value="Submit Game">
-      </form>
-    </section>
+    </div>
+    <div class="sectionContainer">
+      <section class="formSection">
+        <%- include('partials/errors.ejs') %>
+        <form action="/new" method="POST" class="form">
+          <div class="formData">
+            <label for="gameName">Game Title: </label>
+            <input type="text" name="gameName" id="gameName" required/>
+            <label for="gameDate">Release Date: </label>
+            <input type="date" name="gameDate" id="gameDate" required/>
+            <label for="gameDeveloper">Developer: </label>
+            <input type="text" name="gameDeveloper" id="gameDeveloper" required/>
+            <label for="gamePublisher">Publisher: </label>
+            <input type="text" name="gamePublisher" id="gamePublisher" required/>
+            <div class="genreLabel">Genre:</div>
+            <% genreList.forEach((genre)=>{ %>
+                <li class="genreListItemForm">
+                    <input type="hidden" id="genreId" name="<%= genre.name %>" value="<%= genre.id %>" >
+                    <input type="radio" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" required/>
+                    <label for="<%= genre.name %>" class="<%= genre.name %> genreForm"><%= genre.name %></label>
+                </li>
+            <% }) %>
+          </div>
+          <input type="submit" class="submitForm" value="Submit Game">
+        </form>
+      </section>
+    </div>  
   </body>
 </html>

@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <head>
     <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <nav>
-    <nav><% - include('partials/nav.ejs') %></nav>
-    </nav>
-    <div class="titleBox">
+    <%- include('partials/nav.ejs') %>
+    <div class="titleBox"> 
       <header class="title"><%= title %></header>
-      <a class="newButton" href="/new">Create New Game Entry</a>
-    <sectio class="formContainer">
-    <section class="displayBox">
+      <a class="newButton" href="/new">Add New Game</a>
+    </div>
+    <section class="mainBody">
       <div class="sortSidebar">
-        <form method="GET" action="/">
+        <form action="<%= page %>" method="GET" >
           <div class="sortDate">
-            <h1 class="sortHeader">Sort by Date</h1>
-            <input type="radio" id="Ascending" name="sort" value="Ascending" />
-            <label for="Ascending">Ascending</label>
-            <input type="radio" id="Descending" name="sort" value="Descending" />
-            <label for="Descending">Descending</label>
+            <h1 class="sortHeader">Sort by Date:</h1>
+            <div class="sortDateBox">
+              <input type="radio" id="Ascending" name="sort" value="ASC" />
+              <label for="Ascending" class="sortDateName">Ascending</label>
+            </div>
+            <div class="sortDateBox">
+              <input type="radio" id="Descending" name="sort" value="DESC" />
+              <label for="Descending" class="sortDateName">Descending</label>
+            </div>
           </div>
           <div class="sortGenre">
-            <h1 class="sortHeader">Sort by Genre</h1>
+            <h1 class="sortHeader">Sort by Genre:</h1>
             <ul class="genreList">
             <% genreList.forEach((genre)=>{ %>
                 <li class="genreListItem">
-                     <input type="hidden" id="genreId" name="genreId" value="<%= genre.id %>" >
                     <input type="checkbox" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
-                    <label for="<%= genre.name %>"><%= genre.name %></label>
+                    <label for="<%= genre.name %>" class="genreName <%= genre.name %>"><%= genre.name %></label>
                 </li>
             <% }) %>
             </ul>
           </div>
-          <input type="submit" class="submitButton" value="Apply Filters">
+          <input type="submit" class="filterButton" value="Apply Filters">
         </form>
       </div>
       <div class="itemBox">
         <% gamesInfo.forEach((game)=>{ %>
           <div class="gameBox">
             <a href="/<%= game.id%>/details" class="gameLink"></a>
-            <div class="imageBox"><img src="../public//img/game-cartridge.png" alt="Image of a game cartridge" class="gameImg"></div>
+            <div class="imageBox"><img src="/img/game-cartridge.png" alt="Image of a game cartridge" class="gameImg"></div>
             <div class="textBox">
               <div class="gameTitle"><%= game.name %></div>
-              <div class="gameDate"><%= game.date %></div>
-              <div class="developer"><%= game.developer %></div>
-              <div class="publisher"><%= game.publisher %></div>
+              <div class="dataBox">
+                <div class="gameDate">Release Date: <%= game.date %></div>
+                <div class="developer">Developer: <%= game.developer %></div>
+                <div class="publisher">Publisher: <%= game.publisher %></div>
+              </div>
             </div>
-            <div class="genre"><%= game.genre %></div>  
+            <div class="genre <%= game.genre %>"><%= game.genre %></div>  
           </div>
         <% }) %>
       </div>

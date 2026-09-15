@@ -1,47 +1,23 @@
 const { body, validation, matchedData, validationResult } = require('express-validator');
 const db = require('../db/queries');
 
-const lengthError = 'must be between 1 and 255 characters!';
+const lengthError = ' must be between 1 and 255 characters!';
 
 const validateEntry = [
-  body(gameName)
+  body('gameName')
     .trim()
     .isLength({ min: 1, max: 255 })
     .withMessage(`Game title` + lengthError),
-  body(gameDeveloper)
+  body('gameDeveloper')
     .trim()
     .isLength({ min: 1, max: 255 })
     .withMessage(`Developer name` + lengthError),
-  body(gamePublisher)
+  body('gamePublisher')
     .trim()
     .isLength({ min: 1, max: 255 })
     .withMessage(`Publisher name` + lengthError),
-  body(gameDate).trim().isDate().withMessage(`Release Date must be a valid date!`),
+  body('gameDate').trim().isDate().withMessage(`Release Date must be a valid date!`),
 ];
-
-// IN CASE THE BELOW DOESNT WORK:
-// async function allGamesGet(req, res) {
-//   // route: '/'
-//   // Sample sorted route: '/?sort=DESC&genre=FPS
-
-//   const genreList = await db.getAllLists(genre);
-
-//   if (!req.query) {
-//     const gamesInfo = await db.getAllGames('ASC');
-//   } else if (req.query.sort && req.query.genre) {
-//     const gamesInfo = await db.getAllGamesByGenre(req.query.sort, req.query.genre);
-//   } else if (req.query.genre) {
-//     const gamesInfo = await db.getAllGamesByGenre('ASC', req.query.genre);
-//   } else if (req.query.sort) {
-//     const gamesInfo = await db.getAllGames(req.query.sort);
-//   }
-
-//   res.render('displayAllGames', {
-//     title: 'All Games',
-//     gamesInfo: gamesInfo,
-//     genreList: genreList,
-//   });
-// }
 
 async function allGamesGet(req, res) {
   // route: '/'
@@ -56,6 +32,7 @@ async function allGamesGet(req, res) {
     title: 'All Games',
     gamesInfo: gamesInfo,
     genreList: genreList,
+    page: `/`,
   });
 }
 
@@ -82,14 +59,14 @@ async function allGamesByStudioGet(req, res) {
   const type = req.params.type;
   const sort = req.query.sort;
   const genre = req.query.genre;
-  const genreList = await db.getAllLists(genre);
-
-  const gamesInfo = await db.getAllGamesByGenre(type, studio, sort, genre);
+  const genreList = await db.getAllLists('genres');
+  const gamesInfo = await db.getAllGamesByStudio(type, studio, sort, genre);
 
   res.render('home', {
     title: `All Games from ${studio}`,
     gamesInfo: gamesInfo,
     genreList: genreList,
+    page: `/${studio}/${type}/games`,
   });
 }
 
@@ -120,10 +97,12 @@ const newGamePost = [
   validateEntry,
   async (req, res) => {
     const errors = validationResult(req);
-    const genreId = req.body.genreId;
+    const genreName = req.body.genre;
+    const genreId = req.body[genreName];
+    const genreList = await db.getAllLists('genres');
 
     if (!errors.isEmpty()) {
-      return res.status(404).render('createFrom', {
+      return res.status(404).render('createForm', {
         title: 'New Game Entry ',
         genreList: genreList,
         errors: errors.array(),
@@ -131,18 +110,17 @@ const newGamePost = [
     }
 
     const { gameName, gameDate, gameDeveloper, gamePublisher } = matchedData(req);
-    const nameDuplicate = db.searchItemByName('name', 'games', gameName);
-    const devDuplicate = db.searchItemByName('name', 'developers', gameDeveloper);
-    const pubDuplicate = db.searchItemByName('name', 'publishers', gamePublisher);
+    const nameDuplicate = await db.searchItemByName('name', 'games', gameName);
+    const devDuplicate = await db.searchItemByName('name', 'developers', gameDeveloper);
+    const pubDuplicate = await db.searchItemByName('name', 'publishers', gamePublisher);
 
     if (nameDuplicate) {
       return res.status(404).render('createForm', {
         title: 'New Game Entry',
         genreList: genreList,
-        errors: ['Game already exists! Please use another name'],
+        errors: [{ msg: 'Game already exists! Please use another name' }],
       });
     }
-
     await db.postNewGame(
       gameName,
       gameDate,
@@ -177,7 +155,10 @@ const updateGamePost = [
   async (req, res) => {
     const errors = validationResult(req);
     const gameId = req.body.gameId;
-    const genreId = req.body.genreId;
+    const genreName = req.body.genre;
+    const genreId = req.body[genreName];
+    const game = await db.getGameById(gameId);
+    const genreList = await db.getAllLists('genres');
 
     if (!errors.isEmpty()) {
       return res.status(404).render('updateForm', {
@@ -189,16 +170,16 @@ const updateGamePost = [
     }
 
     const { gameName, gameDate, gameDeveloper, gamePublisher } = matchedData(req);
-    const nameDuplicate = db.updateNameCheck('games', gameName, gameId);
-    const devDuplicate = db.searchItemByName('name', 'developers', gameDeveloper);
-    const pubDuplicate = db.searchItemByName('name', 'publishers', gamePublisher);
+    const nameDuplicate = await db.updateNameCheck('games', gameName, gameId);
+    const devDuplicate = await db.searchItemByName('name', 'developers', gameDeveloper);
+    const pubDuplicate = await db.searchItemByName('name', 'publishers', gamePublisher);
 
     if (nameDuplicate) {
       return res.status(404).render('updateForm', {
         title: 'Edit Game Entry',
         game: game,
         genreList: genreList,
-        errors: ['Game already exists! Please use another name'],
+        errors: [{ msg: 'Game already exists! Please use another name' }],
       });
     }
 

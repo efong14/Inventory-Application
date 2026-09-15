@@ -1,22 +1,17 @@
-const express = require('express');
+const expressRun = require('express');
 const path = require('node:path');
-const express = require('express');
 const invRouter = require('./routes/invRouter');
 const customNotFoundError = require('./errors/customNotFoundError');
-const app = express();
+const app = expressRun();
 const PORT = 3000;
 const assetPath = path.join(__dirname, 'public');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(assetPath));
+app.use(expressRun.urlencoded({ extended: true }));
+app.use(expressRun.static(assetPath));
 
 app.use('/', invRouter);
-
-app.use((req, res, next) => {
-  throw new customNotFoundError('Page not found');
-});
 
 app.use((err, req, res, next) => {
   console.log(err);

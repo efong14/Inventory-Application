@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <nav><% - include('partials/nav.ejs') %></nav>
-    <div class="titleBox">
+    <%- include('partials/nav.ejs') %>
+    <div class="titleBox form">
       <header class="title"><%= title %></header>
-      <a class="returnButton" href="/">Return to All Games</a>
-    <section class="formContainer">
-    <%- include('partials/errors.ejs') %>
-      <form action="/:gameId/update" method="POST">
-        <input type="hidden" name="gameId" id="gameId" value="game.id">
-        <input type="hidden" name="genreId" id="genreId" value="game.genreId">
-        <label for="gameName">Game Title</label>
-        <input type="text" name="gameName" id="gameName" value="<%= game.name% >" />
-        <label for="gameDate">Release Date</label>
-        <input type="date" name="gameDate" id="gameDate" value="<%= game.date %>" />
-        <label for="gameDeveloper">Developer</label>
-        <input type="text" name="gameDeveloper" id="gameDeveloper" value="<%= game.developer %>"/>
-        <label for="gamePublisher">Publisher</label>
-        <input type="text" name="gamePublisher" id="gamePublisher" value="<%= game.publisher %>"/>
-        <% genreList.forEach((genre)=>{ %>
-            <li class="genreListItem">
-                 <input type="hidden" id="genreId" name="genreId" value="<%= genre.id %>" >
-                <input type="radio" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
-                <label for="<%= genre.name %>"><%= genre.name %></label>
-            </li>
-        <% }) %>
-        <input type="submit" class="submitButton" value="Update Game">
-      </form>
-    </section>
+    </div>
+    <div class="sectionContainer">
+      <section class="formSection">
+        <%- include('partials/errors.ejs') %>
+        <form action="/:gameId/update" method="POST" class="form">
+          <div class="formData">
+            <input type="hidden" name="gameId" id="gameId" value="<%= game.id %>">
+            <label for="gameName">Game Title</label>
+            <input type="text" name="gameName" id="gameName" value="<%= game.name %>" />
+            <label for="gameDate">Release Date</label>
+            <input type="date" name="gameDate" id="gameDate" value="<%= game.date %>" />
+            <label for="gameDeveloper">Developer</label>
+            <input type="text" name="gameDeveloper" id="gameDeveloper" value="<%= game.developer %>"/>
+            <label for="gamePublisher">Publisher</label>
+            <input type="text" name="gamePublisher" id="gamePublisher" value="<%= game.publisher %>"/>
+            <div class="genreLabel">Genre:</div>
+            <% genreList.forEach((genre)=>{ %>
+                <li class="genreListItemForm">
+                      <input type="hidden" id="genreId" name="<%= genre.name %>" value="<%= genre.id %>" >
+                    <input type="radio" id="<%= genre.name %>" name="genre" value="<%= genre.name %>" />
+                    <label for="<%= genre.name %>" class="<%= genre.name %> genreForm"><%= genre.name %></label>
+                </li>
+            <% }) %>
+          </div>
+          <input type="submit" class="submitForm" value="Update Game">
+        </form>
+      </section>
+    </div>
   </body>
 </html>

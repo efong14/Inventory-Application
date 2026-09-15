@@ -1,0 +1,447 @@
+@font-face {
+  font-family: customFont;
+  src: url(./font/Retro\ Gaming.ttf);
+}
+
+:root {
+  --primary-bg-color: #fffaf3;
+  --card-color: white;
+  --highlight-bg-color: #ff5722;
+  --cool-bg-color: #76abae;
+  --dark-bg-color: #303841;
+}
+
+body {
+  font-family: customFont;
+  margin: 0px;
+  padding: 0px;
+  background-color: var(--primary-bg-color);
+}
+
+a {
+  color: var(--dark-bg-color);
+  text-decoration: none;
+}
+
+.navBox {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: 100%;
+  padding-bottom: 10px;
+  background-color: var(--highlight-bg-color);
+}
+
+.navTitle {
+  color: var(--primary-bg-color);
+  font-size: 35px;
+  margin-left: 50px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.links {
+  margin-left: 50px;
+}
+
+.navLinks {
+  color: var(--primary-bg-color);
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+/* Main Page & Developers/Publishers Page */
+
+.titleBox,
+.mainBody,
+.displayBox,
+.gameDetailBox {
+  margin-left: 50px;
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: fit-content;
+  margin: 20px 50px 20px 50px;
+}
+
+.title {
+  font-size: 50px;
+}
+
+.newButton {
+  font-size: 18px;
+  background-color: var(--highlight-bg-color);
+  color: var(--primary-bg-color);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.mainBody {
+  display: flex;
+  border: #303841 1px solid;
+  border-radius: 10px;
+  height: fit-content;
+  margin-right: 50px;
+}
+
+.sortSidebar {
+  border-right: #303841 solid 1px;
+  padding: 20px 50px 20px 20px;
+  background-color: var(--cool-bg-color);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.sortHeader {
+  font-size: 25px;
+}
+
+.sortDateBox {
+  display: block;
+}
+
+.genreList {
+  padding-inline-start: 0px;
+}
+
+.sortDateName,
+.genreName {
+  font-size: 20px;
+}
+
+.genreListItem {
+  list-style-type: none;
+  margin-bottom: 15px;
+}
+
+.genreName {
+  color: var(--primary-bg-color);
+  border-radius: 20px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.JRPG {
+  background-color: #49a4bb;
+}
+
+.RPG {
+  background-color: #8b9a6e;
+}
+
+.Action {
+  background-color: #df301c;
+}
+
+.Survival {
+  background-color: #3e0f8d;
+}
+
+.FPS {
+  background-color: #ef6905;
+}
+
+.RTS {
+  background-color: #1b2cc1;
+}
+
+.Card {
+  background-color: #4a4a4a;
+}
+
+.Platformer {
+  background-color: #ff788d;
+}
+
+.filterButton {
+  font-size: 18px;
+  background-color: var(--primary-bg-color);
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 20px;
+  border-radius: 20px;
+  border: none;
+}
+
+.itemBox {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, min(100%, 350px));
+  gap: 10px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gamesBox {
+  border: 1px solid var(--dark-bg-color);
+}
+
+.gameBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--dark-bg-color);
+  border-radius: 10px;
+  background-color: var(--card-color);
+}
+
+.imageBox {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.gameImg {
+  height: 80px;
+  width: 80px;
+}
+
+.textBox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.gameTitle {
+  font-size: 20px;
+  font-weight: bold;
+  align-self: center;
+  text-align: center;
+}
+
+.displayBox {
+  margin-right: 50px;
+}
+
+.dataBox {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 35px;
+}
+
+.dataBox > div {
+  margin-top: 10px;
+}
+
+.gameLink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.genre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 30px;
+  width: 100%;
+  bottom: 0;
+  border-radius: 0 0 8px 8px;
+  color: var(--primary-bg-color);
+}
+
+.itemBoxStudio {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(275px, 100%), 1fr));
+  gap: 10px;
+  grid-auto-rows: 100px;
+}
+
+.studioBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #49a4bb;
+  border-radius: 10px;
+}
+
+.studioLink {
+  text-align: center;
+  color: var(--primary-bg-color);
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Game Details Page */
+
+.details {
+  margin-top: 50px;
+}
+
+.sectionContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.gameBoxDetails {
+  border: 1px solid var(--dark-bg-color);
+  border-radius: 20px;
+  display: flex;
+  padding: 40px;
+  margin: 0 10px 0 10px;
+}
+
+.gameImageDetails {
+  height: 200px;
+  margin-right: 50px;
+}
+
+.gameTitleDetails {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.genreDetails,
+.gameDateDetails,
+.developerDetails,
+.publisherDetails {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.genreDetails {
+  width: fit-content;
+  padding: 0 10px 0 10px;
+  border-radius: 20px;
+  color: var(--primary-bg-color);
+}
+
+.buttonContainerDetails {
+  display: flex;
+}
+
+.updateButton,
+.deleteButton {
+  text-align: center;
+  width: fit-content;
+  padding: 5px 10px 5px 10px;
+  color: var(--primary-bg-color);
+  background-color: var(--cool-bg-color);
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.deleteButton {
+  margin-left: 10px;
+  background-color: var(--dark-bg-color);
+}
+
+/* New Game and Update Game Forms */
+
+.titleBox.form {
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.titleBox.form > .title {
+  font-size: 40px;
+}
+
+.formSection {
+  border: 1px solid var(--dark-bg-color);
+  border-radius: 10px;
+  background-color: var(--card-color);
+}
+
+.form {
+  font-size: 25px;
+}
+
+.formData > input,
+.submitForm {
+  font-family: customFont;
+  font-size: 20px;
+  width: 100%;
+}
+
+.formData {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px 20px 20px;
+}
+
+.genreListItemForm {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+
+.genreForm {
+  padding: 5px 10px 5px 10px;
+  border-radius: 20px;
+  font-size: 20px;
+  color: var(--primary-bg-color);
+}
+
+.submitForm {
+  padding: 10px 0 10px 0;
+  border: none;
+  width: 100%;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: var(--primary-bg-color);
+  background-color: var(--highlight-bg-color);
+}
+
+/* Errors */
+
+.errorText {
+  margin-right: 10px;
+}
+
+/* Footer and Media Queries */
+
+footer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+footer > a {
+  font-size: 15px;
+}
+
+@media (max-width: 600px) {
+  .titleBox {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .title {
+    font-size: 30px;
+  }
+  .mainBody {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .sortSidebar {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .sortHeader {
+    font-size: 20px;
+  }
+  .genreName,
+  .sortDateName {
+    font-size: 15px;
+  }
+
+  /* Details Page Query*/
+
+  .gameBoxDetails {
+    flex-direction: column;
+  }
+}

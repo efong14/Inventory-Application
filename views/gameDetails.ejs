@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <head>
-    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <nav><% - include('partials/nav.ejs') %></nav>
-    <a class="returnButton" href="/">Return to All games</a>
-    <div class="gameBox">
-      <div class="imageBox">
-        <img
-          src="../public//img/game-cartridge.png"
-          alt="Image of a game cartridge"
-          class="gameImg"
-        />
-      </div>
-      <div class="textBox">
-        <div class="gameTitle"><%= game.name %></div>
-        <div class="gameDate"><%= game.date %></div>
-        <div class="developer"><%= game.developer %></div>
-        <div class="publisher"><%= game.publisher %></div>
-      </div>
-      <div class="genre"><%= game.genre %></div>
-      <div class="buttonContainer">
-        <a href="/<%= game.id %>/update" class="updateButton">Update Entry</a>
-        <a href="/<%= game.id %>/delete" class="deleteButton">Delete Entry</a>
+    <%- include('partials/nav.ejs') %>
+    <div class="sectionContainer details">
+      <section class="gameBoxDetails">
+        <div class="imageBox">
+          <img
+            src="/img/game-cartridge.png"
+            alt="Image of a game cartridge"
+            class="gameImageDetails"
+          />
+        </div>
+        <div class="textBox">
+          <div class="gameTitleDetails"><%= game.name %></div>
+          <div class="genreDetails <%= game.genre %>"><%= game.genre %></div>
+          <div class="gameDateDetails">Release Date: <%= game.date %></div>
+          <div class="developerDetails">Developer: <%= game.developer %></div>
+          <div class="publisherDetails">Publisher: <%= game.publisher %></div>
+          <div class="buttonContainerDetails">
+            <a href="/<%= game.id %>/update" class="updateButton">Update Entry</a>
+            <a href="/<%= game.id %>/delete" class="deleteButton">Delete Entry</a>
+          </div>
+        </div>
       </div>
     </div>
   </body>

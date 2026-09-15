@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-</head>
-<body>
-    <nav>
-    <nav><% - include('partials/nav.ejs') %></nav>
-    </nav>
-    <header class="title"><%= title %></header>
-    <section class="displaybox">
-        <div class="itemBox">
-        <% studioList.forEach((studio)=>{ %>
-          <div class="studioBox">
-            <div class="textBox">
-              <a href="/<%= studio.name %>/<%= type %>/games"><%= studio.name %></a>
-            </div>
-          </div>
-        <% }) %>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+      <nav>
+      <%- include('partials/nav.ejs') %>
+      </nav>
+      <div class="titleBox">
+        <header class="title"><%= title %></header>
       </div>
-    </section>
-</body>
+      <section class="displayBox">
+        <div class="itemBoxStudio">
+          <% studiosList.forEach((studio)=>{ %>
+            <div class="studioBox">
+                <a class="studioLink" href="/<%= studio.name %>/<%= type %>/games"><%= studio.name %></a>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+  </body>
 </html>

@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('node:path');
 const invRouter = require('./routes/invRouter');
 const customNotFoundError = require('./errors/customNotFoundError');
-const app = expressRun();
+const app = express();
 const PORT = 3000;
 const assetPath = path.join(__dirname, 'public');
 

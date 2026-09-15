@@ -1,4 +1,4 @@
-const expressRun = require('express');
+const express = require('express');
 const path = require('node:path');
 const invRouter = require('./routes/invRouter');
 const customNotFoundError = require('./errors/customNotFoundError');
@@ -8,8 +8,8 @@ const assetPath = path.join(__dirname, 'public');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(expressRun.urlencoded({ extended: true }));
-app.use(expressRun.static(assetPath));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(assetPath));
 
 app.use('/', invRouter);
 

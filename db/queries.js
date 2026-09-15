@@ -55,10 +55,10 @@ exports.searchItemByName = async (column, table, name) => {
 };
 
 exports.updateNameCheck = async (table, name, id) => {
-  const { rows } = await pool.query(`SELECT name FROM $1 WHERE name = $2 AND id = ${id};`, [
-    table,
+  const { rows } = await pool.query(`SELECT name FROM ${table} WHERE name = $1 AND id != ${id};`, [
     name,
   ]);
+
   return rows[0];
 };
 
@@ -71,8 +71,6 @@ exports.postNewGame = async (
   devDuplicate,
   pubDuplicate,
 ) => {
-  console.log(genreId);
-
   await pool.query(`INSERT INTO games (name, date) VALUES ($1, $2);`, [gameName, gameDate]);
 
   await pool.query(

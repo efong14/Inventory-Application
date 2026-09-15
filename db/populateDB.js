@@ -175,7 +175,7 @@ INSERT INTO game_publisher (gameId, publisherId) SELECT id, 14 FROM games WHERE 
 
 const fullGameInfo = `SELECT games.id AS id, games.name AS name, games.date AS date, genres.name AS genre, developers.name AS developer, publishers.name AS publisher, developers.id AS developerId, publishers.id AS publisherId, genres.id AS genreId FROM games LEFT JOIN game_genre ON games.id = game_genre.gameId LEFT JOIN genres ON game_genre.genreId = genres.id LEFT JOIN game_developer ON games.id = game_developer.gameId LEFT JOIN developers ON game_developer.developerId = developers.id LEFT JOIN game_publisher ON games.id = game_publisher.gameId LEFT JOIN publishers ON game_publisher.publisherId = publishers.id`;
 const testInfo = `SELECT games.id AS id, games.name AS name, games.date AS date, genres.name AS genre FROM games LEFT JOIN game_genre ON games.id = game_genre.gameId LEFT JOIN genres ON game_genre.genreId = genres.id`;
-const tableCheck = `SELECT * FROM genres`;
+const tableCheck = `SELECT * FROM developers`;
 const deleteItem = `DELETE FROM games WHERE id = 23;
 DELETE FROM game_genre WHERE gameId = 23;
 DELETE FROM game_developer WHERE gameId = 23;`;
@@ -197,7 +197,7 @@ async function main() {
   });
   await client.connect();
   // await client.query(deleteItem);
-  const { rows } = await client.query(fullGameInfo);
+  const { rows } = await client.query(tableCheck);
   console.log(rows);
   await client.end();
   console.log('done');
